@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Interceptação</title>
+    <style>
+        body { background-color: #000; color: #0f0; font-family: 'Courier New', Courier, monospace; padding: 20px; }
+        h1 { border-bottom: 2px solid #0f0; padding-bottom: 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { background-color: #111; margin-bottom: 10px; padding: 10px; border-left: 5px solid #0f0; }
+        .hora { font-weight: bold; color: #ff0; }
+    </style>
+</head>
+<body>
+    <h1>[!] INTERCEPTAÇÃO DE REDE ATIVA...</h1>
+    <p>Aguardando conexões de dispositivos na rede...</p>
+    
+    <ul id="lista-dispositivos"></ul>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // COLOQUE AS MESMAS CREDENCIAIS AQUI
+        const firebaseConfig = {
+            apiKey: "AIzaSyBA4QZpTDbfMQrIiCBhpswgD7-TTqgONpo",
+            authDomain: "instagram-gustavokehl.firebaseapp.com",
+            databaseURL: https://firebase.google.com/docs/web/setup#available-libraries
+            projectId: "instagram-gustavokehl",
+            storageBucket: "instagram-gustavokehl.firebasestorage.app",
+            messagingSenderId: "538606143822",
+            appId: "1:538606143822:web:d3a7447e3eb04ef9cab61f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const lista = document.getElementById('lista-dispositivos');
+
+        // Escuta o banco de dados em tempo real
+        onChildAdded(ref(db, 'capturas'), (snapshot) => {
+            const dados = snapshot.val();
+            const novoItem = document.createElement('li');
+            
+            novoItem.innerHTML = `<span class="hora">[${dados.hora}]</span> ALVO IDENTIFICADO: ${dados.dispositivo}`;
+            
+            // Adiciona no topo da lista
+            lista.prepend(novoItem);
+        });
+    </script>
+</body>
+</html>
