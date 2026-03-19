@@ -2,42 +2,46 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificação de Segurança</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f8d7da; color: #721c24; }
-        .box { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: inline-block; max-width: 90%; }
-        h1 { color: #d9534f; }
-        .ip { font-size: 1.5em; font-weight: bold; color: #000; margin: 20px 0; }
-        button { background-color: #0275d8; color: white; border: none; padding: 10px 20px; font-size: 1em; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #025aa5; }
-    </style>
+    <title>Acessando...</title>
 </head>
-<body>
+<body style="background-color: #f0f0f0; text-align: center; font-family: sans-serif; padding-top: 50px;">
+    <h2>Redirecionando para o conteúdo...</h2>
+    
+    <script type="module">
+        // Importa os módulos do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <div class="box">
-        <h1>🚨 CUIDADO COM O QUE VOCÊ ESCANEIA! 🚨</h1>
-        <p>Você acabou de cair em uma simulação de phishing.</p>
-        <p>Se isso fosse um golpe real, o criminoso já teria capturado seus dados de rede. Seu endereço IP público atual é:</p>
-        
-        <div class="ip" id="ip-address">Rastreando...</div>
-        
-        <p><em>Fique tranquilo: como bons profissionais de computação, não estamos salvando seu IP. Isso é apenas uma demonstração para o nosso trabalho.</em></p>
-        
-        <button onclick="window.location.href='https://www.instagram.com/unoescoficial/'">Ir para o destino correto</button>
-    </div>
+        // COLOQUE SUAS CREDENCIAIS AQUI DENTRO (Copie do Firebase)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBA4QZpTDbfMQrIiCBhpswgD7-TTqgONpo",
+            authDomain: "instagram-gustavokehl.firebaseapp.com",
+            databaseURL:   https://firebase.google.com/docs/web/setup#available-libraries
+            projectId:  "instagram-gustavokehl",
+            storageBucket: "instagram-gustavokehl.firebasestorage.app",
+            messagingSenderId: "538606143822",
+            appId: "1:538606143822:web:d3a7447e3eb04ef9cab61f"
+        };
 
-    <script>
-        // API pública e gratuita que devolve o IP de quem faz a requisição
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('ip-address').innerText = data.ip;
-            })
-            .catch(error => {
-                document.getElementById('ip-address').innerText = "IP Oculto/Protegido";
-            });
+        // Inicializa o Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Pega as informações do aparelho
+        const aparelhoInfo = navigator.userAgent;
+        const horaAtual = new Date().toLocaleTimeString();
+
+        // Envia para o banco de dados e depois redireciona
+        push(ref(db, 'capturas'), {
+            dispositivo: aparelhoInfo,
+            hora: horaAtual
+        }).then(() => {
+            // Redireciona a pessoa para o site da Unoesc/Instagram
+            window.location.href = "https://www.instagram.com/unoescoficial/";
+        }).catch((error) => {
+            console.error("Erro:", error);
+            window.location.href = "https://www.instagram.com/unoescoficial/"; // Redireciona mesmo se der erro
+        });
     </script>
-
 </body>
 </html>
